@@ -34,7 +34,7 @@ export default function LandingPage() {
         aceita_termos: formData.get('aceita_termos') === 'on'
       }
 
-      const response = await fetch('https://api.leonardosiqueirabr.com/webhook/contato', {
+      const response = await fetch('https://api.leonardosiqueirabr.com.br/webhook/contato', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
