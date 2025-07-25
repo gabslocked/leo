@@ -12,11 +12,49 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export default function LandingPage() {
   const [contactReason, setContactReason] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Here you can add your form submission logic, e.g., sending data to an API.
-    alert("Formulário enviado com sucesso!")
+    setIsSubmitting(true)
+
+    try {
+      const formData = new FormData(e.currentTarget)
+      
+      // Prepare form data for submission
+      const data = {
+        nome: formData.get('nome'),
+        instituicao: formData.get('instituicao'),
+        cargo: formData.get('cargo'),
+        cidade: formData.get('cidade'),
+        telefone: formData.get('telefone'),
+        email: formData.get('email'),
+        motivo_contato: contactReason,
+        mensagem: formData.get('mensagem'),
+        aceita_termos: formData.get('aceita_termos') === 'on'
+      }
+
+      const response = await fetch('https://api.leonardosiqueirabr.com/webhook/contato', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (response.ok) {
+        alert('Formulário enviado com sucesso! Nossa equipe entrará em contato em breve.')
+        e.currentTarget.reset()
+        setContactReason('')
+      } else {
+        throw new Error('Erro ao enviar formulário')
+      }
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error)
+      alert('Erro ao enviar formulário. Tente novamente mais tarde.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const TitleText = ({ children }: { children: React.ReactNode }) => (
@@ -67,6 +105,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="nome"
+                  name="nome"
                   placeholder="Digite seu nome"
                   required
                 />
@@ -78,6 +117,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="instituicao"
+                  name="instituicao"
                   placeholder="Ex: Empresa, ONG, Câmara Municipal, etc."
                 />
               </div>
@@ -88,6 +128,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="cargo"
+                  name="cargo"
                   placeholder="Ex: Vereador, Assessor"
                 />
               </div>
@@ -98,6 +139,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="cidade"
+                  name="cidade"
                   placeholder="Ex: Palmas - TO"
                   required
                 />
@@ -109,6 +151,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="telefone"
+                  name="telefone"
                   type="tel"
                   placeholder="(99) 99999-9999"
                   required
@@ -121,6 +164,7 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Digite seu e-mail"
                   required
@@ -257,6 +301,7 @@ export default function LandingPage() {
                               Descreva a proposta com detalhes:
                             </Label>
                             <textarea
+                              name="mensagem"
                               className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all min-h-[80px] sm:min-h-[100px] resize-none text-xs sm:text-sm"
                               placeholder="Detalhe sua proposta aqui..."
                               rows={4}
@@ -303,6 +348,7 @@ export default function LandingPage() {
                               Detalhe mais sobre o que você gostaria de conversar:
                             </Label>
                             <textarea
+                              name="mensagem"
                               className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all min-h-[80px] sm:min-h-[100px] resize-none text-xs sm:text-sm"
                               placeholder="Descreva em detalhes o que gostaria de discutir..."
                               rows={4}
@@ -376,7 +422,7 @@ export default function LandingPage() {
               TERMO DE CONSENTIMENTO (LGPD)
             </h2>
             <div className="flex space-x-3 text-blue-950 items-start">
-              <Checkbox id="terms" required className="mt-1" />
+              <Checkbox id="terms" name="aceita_termos" required className="mt-1" />
               <Label htmlFor="terms" className="bg-transparent text-blue-950 sm:text-base leading-relaxed text-xs px-0">
                 Autorizo o uso dos meus dados para que a equipe do mandato entre em contato para as comunicações por
                 e-mail ou WhatsApp, conforme minhas preferências acima.
@@ -388,9 +434,10 @@ export default function LandingPage() {
             <Button
               type="submit"
               size="lg"
-              className="font-bold hover:bg-blue-800 active:bg-blue-900 focus:bg-blue-800 px-6 sm:px-8 md:px-12 lg:px-16 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg bg-blue-950 w-full sm:w-auto min-w-[200px] text-white transition-colors duration-200 hover:scale-105 active:scale-95 transform"
+              disabled={isSubmitting}
+              className="font-bold hover:bg-blue-800 active:bg-blue-900 focus:bg-blue-800 px-6 sm:px-8 md:px-12 lg:px-16 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg bg-blue-950 w-full sm:w-auto min-w-[200px] text-white transition-colors duration-200 hover:scale-105 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ENVIAR FORMULÁRIO
+              {isSubmitting ? "ENVIANDO..." : "ENVIAR FORMULÁRIO"}
             </Button>
           </div>
         </form>
