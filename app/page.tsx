@@ -13,46 +13,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 export default function LandingPage() {
   const [contactReason, setContactReason] = useState("")
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
-    const formData = new FormData(e.currentTarget)
-    
-    // Coletar todos os dados do formulário
-    const data = {
-      nome: formData.get('nome'),
-      instituicao: formData.get('instituicao'),
-      cargo: formData.get('cargo'),
-      cidade: formData.get('cidade'),
-      telefone: formData.get('telefone'),
-      email: formData.get('email'),
-      contactReason: contactReason,
-      subReclamacao: formData.getAll('sub-reclamacao'),
-      mensagem: formData.get('mensagem'),
-      timestamp: new Date().toISOString()
-    }
-    
-    try {
-      const response = await fetch('https://api.leonardosiqueira.com.br/webhook', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      })
-      
-      if (response.ok) {
-        alert("Formulário enviado com sucesso!")
-        // Resetar o formulário
-        e.currentTarget.reset()
-        setContactReason("")
-      } else {
-        throw new Error('Erro ao enviar formulário')
-      }
-    } catch (error) {
-      console.error('Erro ao enviar formulário:', error)
-      alert("Erro ao enviar formulário. Tente novamente.")
-    }
+    // Here you can add your form submission logic, e.g., sending data to an API.
+    alert("Formulário enviado com sucesso!")
   }
 
   const TitleText = ({ children }: { children: React.ReactNode }) => (
@@ -103,7 +67,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="nome"
-                  name="nome"
                   placeholder="Digite seu nome"
                   required
                 />
@@ -115,7 +78,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="instituicao"
-                  name="instituicao"
                   placeholder="Ex: Empresa, ONG, Câmara Municipal, etc."
                 />
               </div>
@@ -126,7 +88,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="cargo"
-                  name="cargo"
                   placeholder="Ex: Vereador, Assessor"
                 />
               </div>
@@ -137,7 +98,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="cidade"
-                  name="cidade"
                   placeholder="Ex: Palmas - TO"
                   required
                 />
@@ -149,7 +109,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="telefone"
-                  name="telefone"
                   type="tel"
                   placeholder="(99) 99999-9999"
                   required
@@ -162,7 +121,6 @@ export default function LandingPage() {
                 <Input
                   className="bg-transparent border-blue-950 text-black"
                   id="email"
-                  name="email"
                   type="email"
                   placeholder="Digite seu e-mail"
                   required
@@ -346,7 +304,6 @@ export default function LandingPage() {
                             </Label>
                             <textarea
                               className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all min-h-[80px] sm:min-h-[100px] resize-none text-xs sm:text-sm"
-                              name="mensagem"
                               placeholder="Descreva em detalhes o que gostaria de discutir..."
                               rows={4}
                             />
