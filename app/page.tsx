@@ -85,7 +85,7 @@ export default function LandingPage() {
 
       <main className="w-full px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 text-[rgba(255,255,255,1)] bg-slate-300">
         <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 md:space-y-12">
-          <p className="text-sm sm:text-base leading-5 sm:leading-6 font-sans text-blue-950 text-center tracking-tight font-normal px-2">
+          <p className="text-sm sm:text-base leading-5 sm:leading-6 font-sans text-blue-950 text-center tracking-tight font-semibold px-2">
             Preencha o formulário abaixo com sua demanda, sugestão ou interesse em conversar.{" "}
             <br className="hidden sm:block" />
             <span className="sm:hidden"> </span>Nossa equipe analisará sua solicitação e retornará o mais breve
