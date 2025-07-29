@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 export default function LandingPage() {
   const [contactReason, setContactReason] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,17 +22,47 @@ export default function LandingPage() {
     try {
       const formData = new FormData(e.currentTarget)
       
-      // Prepare form data for submission
+      // Prepare form data for submission - capturing ALL fields
       const data = {
+        // Basic Information
         nome: formData.get('nome'),
         instituicao: formData.get('instituicao'),
         cargo: formData.get('cargo'),
         cidade: formData.get('cidade'),
         telefone: formData.get('telefone'),
         email: formData.get('email'),
+        
+        // Contact Reason and Sub-selections
         motivo_contato: contactReason,
-        mensagem: formData.get('mensagem'),
-        aceita_termos: formData.get('aceita_termos') === 'on'
+        sub_reclamacao: formData.get('sub-reclamacao'), // Now properly captures the selected value
+        mensagem: formData.get('mensagem'), // Now properly captures the message
+        
+        // Additional fields based on contact type
+        titulo_emenda: formData.get('titulo_emenda'), // For emendas
+        tema_conversa: formData.get('tema_conversa'), // For conversa
+        
+        // Communication Preferences (Radio Groups)
+        whatsapp_conteudo: formData.get('whatsapp_conteudo') || 'sim', // Default to 'sim'
+        newsletter: formData.get('newsletter') || 'sim', // Default to 'sim'
+        
+        // Terms and Consent
+        aceita_termos: formData.get('aceita_termos') === 'on',
+        
+        // Metadata
+        data: new Date().toLocaleDateString('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        }),
+        hora: new Date().toLocaleTimeString('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }),
+        user_agent: navigator.userAgent,
+        form_version: '2.0'
       }
 
       const response = await fetch('https://api.leonardosiqueirabr.com.br/webhook/contato', {
@@ -43,7 +74,8 @@ export default function LandingPage() {
       })
 
       if (response.ok) {
-        alert('Formulário enviado com sucesso! Nossa equipe entrará em contato em breve.')
+        // Instead of showing alert, set form as submitted
+        setIsFormSubmitted(true)
         e.currentTarget.reset()
         setContactReason('')
       } else {
@@ -59,6 +91,31 @@ export default function LandingPage() {
 
   const TitleText = ({ children }: { children: React.ReactNode }) => (
     <span className="bg-blue-700 px-2 py-1 leading-tight">{children}</span>
+  )
+
+  // Component to show after form submission
+  const ThankYouComponent = () => (
+    <div className="w-full px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 text-[rgba(255,255,255,1)] bg-slate-300">
+      <footer className="pt-8 sm:pt-12 pb-6 sm:pb-8 text-center bg-[rgba(0,20,54,1)] rounded-lg">
+        <div className="relative w-full mx-0 my-0 px-0">
+          <Image
+            src="/images/Obrigado.png"
+            alt="Obrigado pelo contato"
+            width={1200}
+            height={900}
+            className="w-full h-auto max-w-full px-[6%]"
+          />
+        </div>
+        <div className="w-full px-3 sm:px-4 mt-4 sm:mt-6">
+          <div className="flex justify-center gap-3 sm:gap-4 mt-3 sm:mt-4 flex-wrap">
+            <SocialIcon href="#" platform="youtube" label="Siga Leo Siqueira no Youtube" />
+            <SocialIcon href="#" platform="instagram" label="Siga Leo Siqueira no Instagram" />
+            <SocialIcon href="#" platform="linkedin" label="Siga Leo Siqueira no LinkedIn" />
+            <SocialIcon href="#" platform="x" label="Siga Leo Siqueira no X" />
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 
   return (
@@ -83,8 +140,12 @@ export default function LandingPage() {
         />
       </header>
 
-      <main className="w-full px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 text-[rgba(255,255,255,1)] bg-slate-300">
-        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 md:space-y-12">
+      {/* Conditional rendering: show thank you component if form is submitted, otherwise show form */}
+      {isFormSubmitted ? (
+        <ThankYouComponent />
+      ) : (
+        <main className="w-full px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 text-[rgba(255,255,255,1)] bg-slate-300">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 md:space-y-12">
           <p className="text-sm sm:text-base leading-5 sm:leading-6 font-sans text-blue-950 text-center tracking-tight font-semibold px-2">
             Preencha o formulário abaixo com sua demanda, sugestão ou interesse em conversar.{" "}
             <br className="hidden sm:block" />
@@ -202,6 +263,7 @@ export default function LandingPage() {
                             <input
                               type="radio"
                               name="sub-reclamacao"
+                              value="reclamacao"
                               id="sub-reclamacao"
                               className="w-4 h-4 flex-shrink-0"
                             />
@@ -216,6 +278,7 @@ export default function LandingPage() {
                             <input
                               type="radio"
                               name="sub-reclamacao"
+                              value="pedido"
                               id="sub-pedido"
                               className="w-4 h-4 flex-shrink-0"
                             />
@@ -230,6 +293,7 @@ export default function LandingPage() {
                             <input
                               type="radio"
                               name="sub-reclamacao"
+                              value="sugestao"
                               id="sub-sugestao"
                               className="w-4 h-4 flex-shrink-0"
                             />
@@ -244,6 +308,7 @@ export default function LandingPage() {
                             <input
                               type="radio"
                               name="sub-reclamacao"
+                              value="elogio"
                               id="sub-elogio"
                               className="w-4 h-4 flex-shrink-0"
                             />
@@ -260,6 +325,7 @@ export default function LandingPage() {
                             Descreva melhor o que deseja compartilhar:
                           </Label>
                           <textarea
+                            name="mensagem"
                             className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all min-h-[60px] sm:min-h-[80px] resize-none text-xs sm:text-sm"
                             placeholder="Digite aqui sua mensagem..."
                             rows={3}
@@ -292,6 +358,7 @@ export default function LandingPage() {
                             </Label>
                             <input
                               type="text"
+                              name="titulo_emenda"
                               className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all text-xs sm:text-sm"
                               placeholder="Ex: Construção de praça no bairro..."
                             />
@@ -339,6 +406,7 @@ export default function LandingPage() {
                             </Label>
                             <input
                               type="text"
+                              name="tema_conversa"
                               className="w-full bg-blue-900/20 border-2 border-blue-700 rounded-lg p-2 sm:p-3 text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:bg-blue-900/30 transition-all text-xs sm:text-sm"
                               placeholder="Ex: Discussão sobre políticas públicas..."
                             />
@@ -381,7 +449,7 @@ export default function LandingPage() {
                 <p className="mb-3 sm:mb-4 sm:text-lg md:text-xl text-blue-950 px-2 text-lg">
                   Deseja receber conteúdos do Leo pelo WhatsApp?
                 </p>
-                <RadioGroup className="flex flex-row space-x-4 text-center items-center justify-center">
+                <RadioGroup defaultValue="sim" name="whatsapp_conteudo" className="flex flex-row space-x-4 text-center items-center justify-center">
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="sim" id="whatsapp-sim" />
                     <Label className="text-base text-blue-950" htmlFor="whatsapp-sim">
@@ -398,7 +466,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="mb-2 text-xl text-blue-950">Gostaria de assinar a newsletter semanal?</p>
-                <RadioGroup className="flex flex-row space-x-4 text-center items-center justify-center">
+                <RadioGroup defaultValue="sim" name="newsletter" className="flex flex-row space-x-4 text-center items-center justify-center">
                   <div className="flex space-x-2 items-center">
                     <RadioGroupItem value="sim" id="newsletter-sim" />
                     <Label className="text-base text-blue-950 my-0" htmlFor="newsletter-sim">
@@ -422,7 +490,7 @@ export default function LandingPage() {
               TERMO DE CONSENTIMENTO (LGPD)
             </h2>
             <div className="flex space-x-3 text-blue-950 items-start">
-              <Checkbox id="terms" name="aceita_termos" required className="mt-1" />
+              <Checkbox id="terms" name="aceita_termos" required className="mt-1" defaultChecked />
               <Label htmlFor="terms" className="bg-transparent text-blue-950 sm:text-base leading-relaxed text-xs px-0">
                 Autorizo o uso dos meus dados para que a equipe do mandato entre em contato para as comunicações por
                 e-mail ou WhatsApp, conforme minhas preferências acima.
@@ -442,7 +510,7 @@ export default function LandingPage() {
           </div>
         </form>
       </main>
-      <Footer />
+      )}
     </div>
   )
 }
