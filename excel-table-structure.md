@@ -4,41 +4,41 @@
 
 ### **Cabeçalhos da Planilha (Linha 1)**
 
-| A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **ID** | **Data/Hora** | **Nome** | **Email** | **Telefone** | **Cidade** | **Instituição** | **Cargo** | **Motivo Contato** | **Sub-categoria** | **Mensagem** | **WhatsApp** | **Newsletter** | **Aceita Termos** | **User Agent** | **Versão Form** | **Status** | **Observações** |
+| A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **ID** | **Data** | **Hora** | **Nome** | **Email** | **Telefone** | **Cidade** | **Instituição** | **Cargo** | **Tipo Contato** | **Título/Tema** | **Descrição** | **WhatsApp** | **Newsletter** | **Aceita Termos** | **User Agent** | **Status** | **Observações** |
 
 ### **Descrição dos Campos**
 
 | Campo | Coluna | Tipo | Descrição | Valores Possíveis |
 |-------|--------|------|-----------|-------------------|
 | **ID** | A | Número | Identificador único sequencial | 1, 2, 3... |
-| **Data/Hora** | B | Data/Hora | Timestamp da submissão | 2025-01-29 14:30:00 |
-| **Nome** | C | Texto | Nome completo do usuário | João Silva |
-| **Email** | D | Email | Email do usuário | joao@email.com |
-| **Telefone** | E | Texto | Telefone com DDD | (63) 99999-9999 |
-| **Cidade** | F | Texto | Cidade do usuário | Palmas - TO |
-| **Instituição** | G | Texto | Instituição (opcional) | Câmara Municipal |
-| **Cargo** | H | Texto | Cargo/Função (opcional) | Vereador |
-| **Motivo Contato** | I | Texto | Razão principal do contato | reclamacao, emendas, conversa |
-| **Sub-categoria** | J | Texto | Sub-categoria quando aplicável | reclamacao, pedido, sugestao, elogio |
-| **Mensagem** | K | Texto Longo | Mensagem detalhada do usuário | Texto livre |
-| **WhatsApp** | L | Texto | Deseja receber conteúdo WhatsApp | sim, nao |
-| **Newsletter** | M | Texto | Deseja receber newsletter | sim, nao |
-| **Aceita Termos** | N | Booleano | Aceitou termos LGPD | TRUE, FALSE |
-| **User Agent** | O | Texto | Navegador/dispositivo usado | Mozilla/5.0... |
-| **Versão Form** | P | Texto | Versão do formulário | 2.0 |
+| **Data** | B | Data | Data da submissão | 29/01/2025 |
+| **Hora** | C | Hora | Hora da submissão | 14:30:15 |
+| **Nome** | D | Texto | Nome completo do usuário | João Silva |
+| **Email** | E | Email | Email do usuário | joao@email.com |
+| **Telefone** | F | Texto | Telefone com DDD | (63) 99999-9999 |
+| **Cidade** | G | Texto | Cidade do usuário | Palmas - TO |
+| **Instituição** | H | Texto | Instituição (opcional) | Câmara Municipal |
+| **Cargo** | I | Texto | Cargo/Função (opcional) | Vereador |
+| **Tipo Contato** | J | Texto | Tipo principal de contato | Reclamacao, Apoio, PedidoEmenda, MarcarConversa |
+| **Título/Tema** | K | Texto | Título ou tema do contato | Texto livre ou "Não informado" |
+| **Descrição** | L | Texto Longo | Descrição detalhada do usuário | Texto livre |
+| **WhatsApp** | M | Texto | Deseja receber conteúdo WhatsApp | sim, nao |
+| **Newsletter** | N | Texto | Deseja receber newsletter | sim, nao |
+| **Aceita Termos** | O | Booleano | Aceitou termos LGPD | TRUE, FALSE |
+| **User Agent** | P | Texto | Navegador/dispositivo usado | Mozilla/5.0... |
 | **Status** | Q | Texto | Status do atendimento | Novo, Em Andamento, Concluído |
 | **Observações** | R | Texto | Observações internas da equipe | Texto livre |
 
 ### **Exemplo de Dados (Linhas 2-5)**
 
-| A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 29/01/2025 14:30 | João Silva | joao@email.com | (63) 99999-9999 | Palmas - TO | Câmara Municipal | Vereador | reclamacao | pedido | Solicito melhorias na iluminação pública do bairro... | sim | sim | TRUE | Mozilla/5.0 Chrome | 2.0 | Novo | - |
-| 2 | 29/01/2025 15:45 | Maria Santos | maria@email.com | (63) 88888-8888 | Araguaína - TO | - | - | emendas | - | Gostaria de solicitar emenda para construção de praça... | sim | nao | TRUE | Mozilla/5.0 Safari | 2.0 | Novo | - |
-| 3 | 29/01/2025 16:20 | Carlos Oliveira | carlos@email.com | (63) 77777-7777 | Gurupi - TO | ONG Ambiental | Coordenador | conversa | - | Interesse em discutir políticas ambientais... | nao | sim | TRUE | Mozilla/5.0 Firefox | 2.0 | Novo | - |
-| 4 | 29/01/2025 17:10 | Ana Costa | ana@email.com | (63) 66666-6666 | Porto Nacional - TO | - | - | reclamacao | elogio | Parabenizo pelo excelente trabalho na área da saúde... | sim | sim | TRUE | Mozilla/5.0 Edge | 2.0 | Novo | - |
+| A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 29/01/2025 | 14:30:15 | João Silva | joao@email.com | (63) 99999-9999 | Palmas - TO | Câmara Municipal | Vereador | Reclamacao | Não informado | Solicito melhorias na iluminação pública do bairro... | sim | sim | TRUE | Mozilla/5.0 Chrome | Novo | - |
+| 2 | 29/01/2025 | 15:45:22 | Maria Santos | maria@email.com | (63) 88888-8888 | Araguaína - TO | - | - | PedidoEmenda | Construção de praça | Gostaria de solicitar emenda para construção de praça no bairro central... | sim | nao | TRUE | Mozilla/5.0 Safari | Novo | - |
+| 3 | 29/01/2025 | 16:20:10 | Carlos Oliveira | carlos@email.com | (63) 77777-7777 | Gurupi - TO | ONG Ambiental | Coordenador | MarcarConversa | Políticas ambientais | Interesse em discutir políticas ambientais para a região... | nao | sim | TRUE | Mozilla/5.0 Firefox | Novo | - |
+| 4 | 29/01/2025 | 17:10:33 | Ana Costa | ana@email.com | (63) 66666-6666 | Porto Nacional - TO | - | - | Apoio | Não informado | Parabenizo pelo excelente trabalho na área da saúde... | sim | sim | TRUE | Mozilla/5.0 Edge | Novo | - |
 
 ### **Formatação Sugerida para Excel**
 
@@ -47,10 +47,11 @@
 - **Texto:** Branco (#FFFFFF)
 - **Negrito:** Sim
 
-#### **Formatação Condicional por Motivo de Contato:**
-- **Reclamação:** Fundo amarelo claro (#FFF3CD)
-- **Emendas:** Fundo azul claro (#D1ECF1)
-- **Conversa:** Fundo verde claro (#D4EDDA)
+#### **Formatação Condicional por Tipo de Contato:**
+- **Reclamacao:** Fundo amarelo claro (#FFF3CD)
+- **Apoio:** Fundo verde claro (#D4EDDA)
+- **PedidoEmenda:** Fundo azul claro (#D1ECF1)
+- **MarcarConversa:** Fundo roxo claro (#E2E3FF)
 
 #### **Formatação Condicional por Status:**
 - **Novo:** Fundo verde (#28A745), texto branco
@@ -59,41 +60,49 @@
 
 #### **Larguras de Coluna Sugeridas:**
 - A (ID): 50px
-- B (Data/Hora): 150px
-- C (Nome): 200px
-- D (Email): 250px
-- E (Telefone): 150px
-- F (Cidade): 150px
-- G (Instituição): 200px
-- H (Cargo): 150px
-- I (Motivo): 120px
-- J (Sub-categoria): 120px
-- K (Mensagem): 400px
-- L (WhatsApp): 80px
-- M (Newsletter): 80px
-- N (Termos): 80px
-- O (User Agent): 300px
-- P (Versão): 80px
+- B (Data): 100px
+- C (Hora): 80px
+- D (Nome): 200px
+- E (Email): 250px
+- F (Telefone): 150px
+- G (Cidade): 150px
+- H (Instituição): 200px
+- I (Cargo): 150px
+- J (Tipo Contato): 120px
+- K (Título/Tema): 200px
+- L (Descrição): 400px
+- M (WhatsApp): 80px
+- N (Newsletter): 80px
+- O (Termos): 80px
+- P (User Agent): 300px
 - Q (Status): 120px
 - R (Observações): 300px
 
-### **Fórmulas Úteis para Excel**
+### **Fórmulas Úteis**
 
-#### **Contador de Submissões por Motivo:**
+#### **Contagem por Tipo de Contato (Coluna J):**
 ```excel
-=COUNTIF(I:I,"reclamacao")  // Conta reclamações
-=COUNTIF(I:I,"emendas")     // Conta pedidos de emendas
-=COUNTIF(I:I,"conversa")    // Conta pedidos de conversa
+=COUNTIF(J:J,"Reclamacao")
+=COUNTIF(J:J,"Apoio")
+=COUNTIF(J:J,"PedidoEmenda")
+=COUNTIF(J:J,"MarcarConversa")
+```
+
+#### **Contagem por Status (Coluna Q):**
+```excel
+=COUNTIF(Q:Q,"Novo")
+=COUNTIF(Q:Q,"Em Andamento")
+=COUNTIF(Q:Q,"Concluído")
 ```
 
 #### **Percentual de Aceitação WhatsApp:**
 ```excel
-=COUNTIF(L:L,"sim")/COUNTA(L:L)*100
+=COUNTIF(M:M,"sim")/COUNTA(M:M)*100
 ```
 
 #### **Percentual de Aceitação Newsletter:**
 ```excel
-=COUNTIF(M:M,"sim")/COUNTA(M:M)*100
+=COUNTIF(N:N,"sim")/COUNTA(N:N)*100
 ```
 
 #### **Filtro por Data (Últimos 30 dias):**
@@ -101,22 +110,19 @@
 =FILTER(A:R, B:B>=TODAY()-30)
 ```
 
-### **Validação de Dados Sugerida**
+### **Validação de Dados**
 
-#### **Coluna I (Motivo Contato):**
-- Lista: reclamacao, emendas, conversa
+#### **Coluna J (Tipo Contato) - Lista Suspensa:**
+- Valores permitidos: `Reclamacao`, `Apoio`, `PedidoEmenda`, `MarcarConversa`
 
-#### **Coluna J (Sub-categoria):**
-- Lista: reclamacao, pedido, sugestao, elogio
+#### **Coluna M (WhatsApp) - Lista Suspensa:**
+- Valores permitidos: `sim`, `nao`
 
-#### **Coluna L (WhatsApp):**
-- Lista: sim, nao
+#### **Coluna N (Newsletter) - Lista Suspensa:**
+- Valores permitidos: `sim`, `nao`
 
-#### **Coluna M (Newsletter):**
-- Lista: sim, nao
-
-#### **Coluna Q (Status):**
-- Lista: Novo, Em Andamento, Concluído, Arquivado
+#### **Coluna Q (Status) - Lista Suspensa:**
+- Valores permitidos: `Novo`, `Em Andamento`, `Concluído`, Arquivado
 
 ### **Dashboard Resumo (Planilha Separada)**
 

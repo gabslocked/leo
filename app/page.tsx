@@ -19,11 +19,13 @@ export default function LandingPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
+    let data: any = null
+    
     try {
       const formData = new FormData(e.currentTarget)
       
       // Prepare form data for submission - capturing ALL fields
-      const data = {
+      data = {
         // Basic Information
         nome: formData.get('nome'),
         instituicao: formData.get('instituicao'),
@@ -32,14 +34,18 @@ export default function LandingPage() {
         telefone: formData.get('telefone'),
         email: formData.get('email'),
         
-        // Contact Reason and Sub-selections
-        motivo_contato: contactReason,
-        sub_reclamacao: formData.get('sub-reclamacao'), // Now properly captures the selected value
-        mensagem: formData.get('mensagem'), // Now properly captures the message
-        
-        // Additional fields based on contact type
-        titulo_emenda: formData.get('titulo_emenda'), // For emendas
-        tema_conversa: formData.get('tema_conversa'), // For conversa
+        // Contact Type and Unified Fields
+        tipo_contato: (() => {
+          if (contactReason === 'reclamacao') {
+            const subType = formData.get('sub-reclamacao');
+            return subType === 'elogio' ? 'Apoio' : 'Reclamacao';
+          }
+          if (contactReason === 'emendas') return 'PedidoEmenda';
+          if (contactReason === 'conversa') return 'MarcarConversa';
+          return contactReason;
+        })(),
+        titulo_tema: formData.get('titulo_emenda') || formData.get('tema_conversa') || 'Não informado',
+        descricao: formData.get('mensagem') || 'Não informado',
         
         // Communication Preferences (Radio Groups)
         whatsapp_conteudo: formData.get('whatsapp_conteudo') || 'sim', // Default to 'sim'
@@ -65,6 +71,8 @@ export default function LandingPage() {
         form_version: '2.0'
       }
 
+      console.log('Dados preparados para envio:', data)
+      
       const response = await fetch('https://api.leonardosiqueirabr.com.br/webhook/contato', {
         method: 'POST',
         headers: {
@@ -73,17 +81,39 @@ export default function LandingPage() {
         body: JSON.stringify(data)
       })
 
+      console.log('Resposta do servidor:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok
+      })
+
       if (response.ok) {
+        console.log('Formulário enviado com sucesso!')
         // Instead of showing alert, set form as submitted
         setIsFormSubmitted(true)
-        e.currentTarget.reset()
+        // Safely reset form if currentTarget exists
+        if (e.currentTarget) {
+          e.currentTarget.reset()
+        }
         setContactReason('')
       } else {
-        throw new Error('Erro ao enviar formulário')
+        const errorText = await response.text()
+        console.error('Erro na resposta do servidor:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText
+        })
+        throw new Error(`Erro ${response.status}: ${response.statusText} - ${errorText}`)
       }
     } catch (error) {
       console.error('Erro ao enviar formulário:', error)
-      alert('Erro ao enviar formulário. Tente novamente mais tarde.')
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
+      console.error('Detalhes do erro:', {
+        message: errorMessage,
+        error: error,
+        formData: data
+      })
+      alert(`Erro ao enviar formulário: ${errorMessage}. Tente novamente mais tarde.`)
     } finally {
       setIsSubmitting(false)
     }
